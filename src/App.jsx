@@ -1,28 +1,39 @@
-import { useState } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
+import Home from './pages/Home'
+import ChiSiamo from './pages/ChiSiamo'
+import Contatti from './pages/Contatti'
+import Servizio from './pages/Servizio'
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+function WrapperRoute({ children }){
+  const { pathname } = useLocation()
+  // Simple SEO tweaks: update title per route
+  const titleMap = {
+    '/': 'Il Marketing Much More S.r.l. — Agenzia di marketing digitale B2B',
+    '/chi-siamo': 'Chi siamo — Il Marketing Much More S.r.l.',
+    '/contatti': 'Contatti — Il Marketing Much More S.r.l.',
+    '/servizi/ecommerce': 'E‑commerce — Il Marketing Much More S.r.l.',
+    '/servizi/digital-content': 'Digital Content — Il Marketing Much More S.r.l.',
+    '/servizi/digital-advertising': 'Digital Advertising — Il Marketing Much More S.r.l.',
+    '/servizi/seo': 'SEO — Il Marketing Much More S.r.l.',
+    '/servizi/finanziamenti': 'Finanziamenti — Il Marketing Much More S.r.l.',
+  }
+  document.title = titleMap[pathname] || 'Il Marketing Much More S.r.l.'
+  return children
 }
 
-export default App
+export default function App(){
+  return (
+    <WrapperRoute>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/chi-siamo" element={<ChiSiamo />} />
+        <Route path="/contatti" element={<Contatti />} />
+        <Route path="/servizi/ecommerce" element={<Servizio type="ecommerce" />} />
+        <Route path="/servizi/digital-content" element={<Servizio type="digital-content" />} />
+        <Route path="/servizi/digital-advertising" element={<Servizio type="digital-advertising" />} />
+        <Route path="/servizi/seo" element={<Servizio type="seo" />} />
+        <Route path="/servizi/finanziamenti" element={<Servizio type="finanziamenti" />} />
+      </Routes>
+    </WrapperRoute>
+  )
+}
